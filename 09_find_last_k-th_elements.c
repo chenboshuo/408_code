@@ -11,15 +11,15 @@ struct node {
 
 /**
  * 寻找倒数第loc_r 个元素
- * @param  head 指向链表头节点的指针
+ * @param  head 指向链表头结点的指针
  * @param  loc_r       要寻找的元素的位置(倒数)
- * @return             找到节点的data值(找不到返回0)
+ * @return             找到结点的data值(找不到返回0)
  */
 Data find_least_k_element(struct node* head, int loc_r) {
   struct node *fast = head, *slow = head;  // 定义快慢指针
   // 快指针前进k次
   while (loc_r--) {
-    if (!fast) {         // 快指针到达空节点说明找不到
+    if (!fast) {         // 快指针到达空结点说明找不到
       return NOT_FOUND;  // 由题意，找不到返回0
     }
     fast = fast->link;
