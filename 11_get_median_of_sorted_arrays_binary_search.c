@@ -10,7 +10,9 @@
  * 试设计一个在时间和空间两方面都尽可能高效的算法，
  * 找出两个序列 A 和 B 的中位数。
  */
+#include <math.h>
 #include <stdio.h>
+#define min(a, b) ((a) < (b) ? (a) : (b))
 
 /**
  * 获得两个升序数列的中位数
@@ -20,19 +22,22 @@
  * @return        中位数
  */
 int get_median(int* nums_a, int* nums_b, int length) {
-  int i = 0, j = 0;  // 两个序列的位置
-  int cur_median;    // 当前中位数的值
-  for (int merged_loc = 0; merged_loc < length; ++merged_loc) {
-    if (j >= length ||  // b 数组用完
-        (i < length && nums_a[i] <= nums_b[j])) {
-      cur_median = nums_a[i];
-      ++i;
+  int left_a = 0, left_b = 0;
+  while (length > 1) {
+    int new_length = ceil(length / 2);
+    int eat = length - new_length;
+    length = new_length;
+
+    int middle_a_loc = left_a + new_length - 1;
+    int middle_b_loc = left_b + new_length - 1;
+
+    if (nums_a[middle_a_loc] < nums_b[middle_b_loc]) {
+      left_a += eat;
     } else {
-      cur_median = nums_b[j];
-      ++j;
+      left_b += eat;
     }
   }
-  return cur_median;
+  return min(nums_a[left_a], nums_b[left_b]);
 }
 
 int main() {
@@ -52,4 +57,10 @@ int main() {
   int nums_31[1] = {5};
   int nums_32[1] = {8};
   printf("%d\n", get_median(nums_31, nums_32, 1));
+  // output: 5
+
+  int nums_41[4] = {1, 3, 5, 7};
+  int nums_42[4] = {2, 4, 6, 8};
+  printf("%d\n", get_median(nums_41, nums_42, 4));
+  // output: 4
 }
