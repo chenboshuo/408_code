@@ -24,7 +24,7 @@
 int get_median(int* nums_a, int* nums_b, int length) {
   int left_a = 0, left_b = 0;
   while (length > 1) {
-    int new_length = ceil(length / 2);
+    int new_length = ceil(((float)length) / 2);
     int eat = length - new_length;
     length = new_length;
 
@@ -63,4 +63,9 @@ int main() {
   int nums_42[4] = {2, 4, 6, 8};
   printf("%d\n", get_median(nums_41, nums_42, 4));
   // output: 4
+
+  int nums_51[3] = {2, 3, 5};
+  int nums_52[3] = {1, 4, 6};
+  printf("%d\n", get_median(nums_51, nums_52, 3));
+  // output:3
 }
