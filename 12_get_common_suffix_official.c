@@ -21,12 +21,8 @@
  * (如图中字符 i 所在结 点的位置 p)
  *
  */
-#include <cstdio>
-#include <cstdlib>
-#include <string>
-#include <unordered_map>
-
-using namespace std;
+#include <stdio.h>
+#include <stdlib.h>
 
 struct ListNode {
   char data;
@@ -40,7 +36,7 @@ struct ListNode {
  * @param  end    尾部链接的节点
  * @return        头节点(该头节点无数据)
  */
-struct ListNode* generate_linked_list(string string, int length,
+struct ListNode* generate_linked_list(char* string, int length,
                                       struct ListNode* end) {
   struct ListNode* head = (struct ListNode*)calloc(1, sizeof(struct ListNode));
 
@@ -69,6 +65,20 @@ void print_linked_list(struct ListNode* data_node) {
 }
 
 /**
+ * 获得链表的长度(含头指针)
+ * @param  head 头结点
+ * @return      链表的长度
+ */
+int len(struct ListNode* head) {
+  int length = 0;
+  while (head) {
+    ++length;
+    head = head->next;
+  }
+  return length;
+}
+
+/**
  * 获得公共后缀的第一个结点位置
  * @param  str1 表示第一个字符串的 head 结点
  * @param  str2 表示第二个字符串的 head 结点
@@ -76,23 +86,24 @@ void print_linked_list(struct ListNode* data_node) {
  */
 struct ListNode* common_suffix_loc(struct ListNode* str1,
                                    struct ListNode* str2) {
-  // 存储每个节点的位置
-  unordered_map<char, struct ListNode*> memo;
+  int str1_length = len(str1), str2_length = len(str2);
 
-  str1 = str1->next;  // 跳过头节点
-  while (str1) {
-    memo[str1->data] = str1;
+  // 移动头指针使得两链表等长
+  while (str1_length > str2_length) {
     str1 = str1->next;
+    --str1_length;
+  }
+  while (str2_length > str1_length) {
+    str2 = str2->next;
+    --str2_length;
   }
 
-  str2 = str2->next;  // 跳过头节点
-  while (str2) {
-    if (memo[str2->data] == str2) {  // 判断是否在当前结点是否在str1 中出现过
-      break;
-    }
+  // 同步移动指针直到两者相同
+  while (str1 != str2) {
+    str1 = str1->next;
     str2 = str2->next;
   }
-  return str2;
+  return str1;
 }
 
 int main() {
