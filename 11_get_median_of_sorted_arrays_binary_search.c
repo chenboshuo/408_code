@@ -28,10 +28,10 @@ int get_median(int* nums_a, int* nums_b, int length) {
     int eat = length - new_length;
     length = new_length;
 
-    int middle_a_loc = left_a + new_length - 1;
-    int middle_b_loc = left_b + new_length - 1;
+    int median_a = nums_a[left_a + new_length - 1];
+    int median_b = nums_b[left_b + new_length - 1];
 
-    if (nums_a[middle_a_loc] < nums_b[middle_b_loc]) {
+    if (median_a < median_b) {  // 若a中位数的值小于b，保留a的后半段
       left_a += eat;
     } else {
       left_b += eat;
