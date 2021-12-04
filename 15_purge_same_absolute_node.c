@@ -38,12 +38,14 @@ void print_list(struct LinkedList* node) {
 /**
  * 删除下一个结点
  * @param pre 要删除的结点的前一个结点的值
+ * @return 删除后pre结点下一个结点的位置
  */
-void remove_next(struct LinkedList* pre) {
+struct LinkedList* remove_next(struct LinkedList* pre) {
   struct LinkedList* to_delete = pre->link;
   struct LinkedList* next = to_delete->link;
   pre->link = next;
   free(to_delete);
+  return next;
 }
 
 void purge_same_absolute_node(struct LinkedList* head, int upper_bound) {
@@ -53,12 +55,12 @@ void purge_same_absolute_node(struct LinkedList* head, int upper_bound) {
     int abs_data = abs(cur->data);
     if (has_discovered[abs_data]) {
       // 表明该绝对值已经出现
-      remove_next(pre);
+      cur = remove_next(pre);
     } else {
       has_discovered[abs_data] = true;
+      pre = cur;
+      cur = cur->link;
     }
-    pre = cur;
-    cur = cur->link;
   }
   free(has_discovered);
 }
@@ -84,6 +86,6 @@ int main() {
   print_list(head);
   /*
    *input:  head->(21)->(-15)->(-15)->(-7)->(15)
-   *output: head->(21)->(-15)->(-7)->(15)
+   *output: head->(21)->(-15)->(-7)
    */
 }
